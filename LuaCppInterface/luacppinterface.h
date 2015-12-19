@@ -100,8 +100,9 @@ public:
 
 	// run a Lua script
 	std::string RunScript(std::string script);
-    
-    // create a userdata using a default operator delete destructor
+	int RunScript(std::string script, std::string* errorString);
+		
+		// create a userdata using a default operator delete destructor
 	template<typename TYPE>
 	LuaUserdata<TYPE> CreateUserdata(TYPE* data)
 	{
@@ -111,11 +112,11 @@ public:
 	// create a userdata
 	template<typename TYPE>
 	LuaUserdata<TYPE> CreateUserdata(TYPE* data, std::function<void(TYPE*)> destructor)
-    {
+	{
 		typename LuaUserdata<TYPE>::UserdataWrapper* wrap = (typename LuaUserdata<TYPE>::UserdataWrapper*)lua_newuserdata(state.get(), sizeof(typename LuaUserdata<TYPE>::UserdataWrapper));
-        
+				
 		memset(wrap, 0, sizeof(typename LuaUserdata<TYPE>::UserdataWrapper));
-        
+				
 		wrap->actualData = data;
 		wrap->destructor = new std::function<void(TYPE*)> (destructor);
 
@@ -154,10 +155,10 @@ public:
 		return internalCreateFunction(std::shared_ptr<std::function<SIG>>(new std::function<SIG>(func)), lua_yieldingFunction<SIG>);
 	}
 
-    void CollectGarbage()
-    {
-        lua_gc(state.get(), LUA_GCCOLLECT, 0);
-    }
+	void CollectGarbage()
+	{
+			lua_gc(state.get(), LUA_GCCOLLECT, 0);
+	}
 
 };
 

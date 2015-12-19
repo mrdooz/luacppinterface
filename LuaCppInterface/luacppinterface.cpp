@@ -88,6 +88,17 @@ std::string Lua::RunScript(std::string script)
 	return "No errors";
 }
 
+int Lua::RunScript(std::string script, std::string* errorString)
+{
+	int err = luaL_dostring(state.get(), script.c_str());
+	if (err != LUA_OK && errorString)
+	{
+		*errorString = LuaGetLastError(state.get());
+	}
+	return err;
+}
+
+
 Lua::~Lua()
 {
 }
