@@ -68,7 +68,7 @@ void LuaTable::ForAllIntegerKeys(std::function<void(int, LuaType::Value)> intege
 	{
 		if ((LuaType::Value)lua_type(state.get(), -2) == LuaType::number)
 		{
-			int key = lua_tointeger(state.get(), -2);
+			int key = (int)lua_tointeger(state.get(), -2);
 			auto valueType = (LuaType::Value)lua_type(state.get(), -1);
 			valueType = CheckForInteger(state.get(), valueType);
 			integerKeys(key, valueType);
