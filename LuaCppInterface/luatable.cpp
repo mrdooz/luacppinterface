@@ -3,6 +3,8 @@
 #include "luatypetemplates.h"
 #include "luafunction.h"
 
+LuaTable LuaTable::EMPTY_TABLE;
+
 static LuaType::Value CheckForInteger(lua_State* state, LuaType::Value valueType)
 {
 	if (valueType == LuaType::number)
@@ -14,6 +16,7 @@ static LuaType::Value CheckForInteger(lua_State* state, LuaType::Value valueType
 	}
 	return valueType;
 }
+
 
 LuaTable::LuaTable(std::shared_ptr<lua_State> state, int index) : LuaReference(state, index)
 {

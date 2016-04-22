@@ -8,10 +8,14 @@
 class LuaTable;
 class LuaReference
 {
-	int ref;
+  enum { INVALID_REF = -1 };
+  int ref = INVALID_REF;
 
 protected:
 	std::shared_ptr<lua_State> state;
+  LuaReference();
+
+  static LuaReference EMPTY_REF;
 
 public:
 	LuaReference(std::shared_ptr<lua_State> state, int index);
@@ -24,6 +28,8 @@ public:
 	LuaType::Value GetType() const;
 	std::shared_ptr<lua_State> GetState();
 	LuaTable GetMetaTable() const;
+
+  bool IsValid() const { return ref != INVALID_REF; }
 };
 
 #endif // LUAREFERENCE_H

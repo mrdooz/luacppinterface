@@ -1,6 +1,12 @@
 #include "luareference.h"
 #include "luatable.h"
 
+LuaReference LuaReference::EMPTY_REF;
+
+LuaReference::LuaReference() : ref(-1)
+{
+}
+
 LuaReference::LuaReference(std::shared_ptr<lua_State> state, int index) : state(state)
 {
 	lua_pushvalue(state.get(), index);
@@ -22,7 +28,10 @@ LuaReference& LuaReference::operator=(const LuaReference& other)
 
 LuaReference::~LuaReference()
 {
-	luaL_unref(state.get(), LUA_REGISTRYINDEX, ref);
+  if (ref != -1)
+  {
+    luaL_unref(state.get(), LUA_REGISTRYINDEX, ref);
+  }
 }
 
 void LuaReference::PushToStack(lua_State* currentState) const
